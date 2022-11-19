@@ -1,1 +1,1 @@
-#all engr 102 code stored here 
+Most of the ENGR 102 code from String Splicing onwards is here.
