@@ -1,3 +1,0 @@
-Gender    Number of Students  Minimum Age  Maximum Age
-Female    3                   0            2
-Male      2                   1            3

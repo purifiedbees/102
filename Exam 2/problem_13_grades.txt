@@ -1,6 +1,0 @@
-Name           Score
-Tom            85.0
-Jim            96.5
-Helen          92.0
-Sam            89.5
-Tina           97.0
