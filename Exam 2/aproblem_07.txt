@@ -1,0 +1,11 @@
+The top down approach is a style in which a high level, detailed description of the program is constructed and then broken down into simpler and simpler parts until you end up with code that uses primitive parts of the language.
+
+The bottom up approach starts with these basic primitive parts and expands on top of them with more and more technically complicated code until the application is finished.
+
+Advantages of top down:
+ - Complex issues can be broken down into much simpler parts that can be understood and tackled
+ - Much easier to see what individual chunks of code do without needing to know exact details
+
+Advantages of bottom up:
+ - Testing is much simpler
+ - Very flexible design as adjustments can be made whenever
