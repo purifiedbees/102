@@ -4,70 +4,88 @@
 #
 # Name:         Jacob Hou
 # Section:      524
-# Assignment:   12.17
+# Assignment:   Lab 12.17
 # Date:         28 November 2022
-#
+
 import numpy as np
-from matplotlib import pyplot as plt
-import csv
+import matplotlib.pyplot as plt
 
-AllWeather = []
-dates = []
-windSpeed = []
-rain = [] #precipitation
-avgTemp = []
-maxTemp = []
-minTemp = []
-days = 0
-with open("WeatherDataCLL.csv") as data:
-    reader = csv.reader(data, delimiter = ",")
-    for i in reader:
-        AllWeather.append(i)
-for weather in range(1, len(AllWeather)):
-    dates.append(AllWeather[weather][0])
-    windSpeed.append(float(AllWeather[weather][1]))
-    rain.append(float(AllWeather[weather][2]))
-    avgTemp.append(int(AllWeather[weather][3]))
-    maxTemp.append(int(AllWeather[weather][4]))
-    minTemp.append(int(AllWeather[weather][5]))
-"""
-#plot 1
-x = dates
-y1 = maxTemp
-y2 = windSpeed
-#gets two y-axes
-fig, ax1 = plt.subplots()
-ax2 = ax1.twinx()
-#makes the x axis and y axes
-plt.xticks(np.arange(0, len(AllWeather), 200))
-ax1.plot(x, y1, color = "green")
-ax2.plot(x, y2, color = "blue")
-ax1.set_ylabel("Maximum Temperature, F")
-ax2.set_ylabel("Average Wind Speed, mph")
-plt.xlabel("Date")
-plt.title("Maximum Temperature and Average Wind Speed")
-ax1.legend(["Max Temp"], loc = "lower left")
-ax2.legend(["Avg Wind Temp"], loc = "lower right")
-plt.show()
+#variables and lists to store data
 
-#plot 2
-x = windSpeed
-plt.xlabel("Average Wind Speed, mph")
-plt.ylabel("Number of days")
-plt.title("Histogram of average wind speed")
-plt.hist(x, bins = 30, color = green)
-plt.show()
+w_d = open("WeatherDataCll.csv",'r')
+temphi = []
+templo = []
+wind = []
+data = []
+for i in w_d:
+    data.append(i.split(','))
+data.remove(data[0])
+day = len(data)
+for i in data:
+    wind.append(float(i[1]))
+    temphi.append(float(i[4]))
+    templo.append(float(i[5]))
+fig, ((plot1,plot2),(plot3,plot4)) = plt.subplots(2,2,figsize=(17,12))
 
+#Graph 1
 
-#plot 3
-x = minTemp
-y = windSpeed
-plt.title("Average Wind Speed vs Minimum Temperature")
-plt.ylabel("Average Wind Speed, mph")
-plt.xlabel("Minimum Temperature, F")
-plt.scatter(x, y, c = "black", s = 5)
-plt.show()
-"""
+d1 = np.linspace(1,day,1096)
+pl1, = plot1.plot(d1,temphi,color = 'r',label= 'Max Temperature')
+plot1.set_ylabel("Maximum temp, F")
+plot1_2 = plot1.twinx()
+pl2, = plot1_2.plot(d1,wind,color = 'b',label= 'Avg Wind')
+plot1_2.set_ylabel("Average Wind Speed, mph")
+plot1.set_yticks(np.arange(0,101,20))
+plot1_2.set_yticks(np.arange(0,20.1,2.5))
+plot1.set_title("Maximum Temp and Average Wind Speed")
+plot1.legend(handles = [pl1,pl2],loc='lower left')
 
-#plot 4
+#Graph 2
 
+x1 = np.linspace(0.0,20,30)
+plot2.hist(wind,x1,edgecolor = 'k',color = 'g')
+plot2.set_xlabel("Average wind speed, mph")
+plot2.set_ylabel("Days")
+plot2.set_title("Histogram of avg wind speed")
+
+#Graph 3
+
+plot3.scatter(templo,wind,color = 'k')
+plot3.set_xlabel("Min Temperature, F")
+plot3.set_ylabel("Avg wind speed, mph")
+plot3.set_title("Avg wind speed vs min temperature")
+
+#Graph 4
+
+monthavg = []
+monthhi = []
+monthlo = []
+month = 1
+while month <= 12:
+    month_x = []
+    lTemp = 1000
+    hTemp = -1000
+    avgTemp = 0.0
+    day = 0.0
+    for i in data:
+        info = i[0].split('/')
+        if int(info[0]) == month:
+            day += 1
+            avgTemp += int(i[3])
+            if int(i[4]) > hTemp:
+                hTemp = int(i[4])
+            if int(i[5]) < lTemp:
+                lTemp = int(i[5])
+    monthavg.append(avgTemp/day)
+    monthhi.append(hTemp)
+    monthlo.append(lTemp)
+    month +=1
+m_month = np.linspace(1,12,12)
+pl1, = plot4.plot(m_month,monthhi,color = 'r',label = 'Highest Temperature')
+pl2, = plot4.plot(m_month,monthlo,color = 'b',label = 'Lowest Temperature')
+plot4.bar(m_month,monthavg,color='y')
+plot4.set_xlabel("Month")
+plot4.set_ylabel("Average Temperature, F")
+plot4.set_title("Temperature by Month")
+plot4.set_xticks(ticks = [1,2,3,4,5,6,7,8,9,10,11,12], label = [1,2,3,4,5,6,7,8,9,10,11,12])
+plot4.legend(handles = [pl1,pl2],loc = 'upper left')
