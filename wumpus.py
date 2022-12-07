@@ -117,14 +117,14 @@ def show_instructions():
         """)
 
 game = True
-pos = 0 
+pos = rand.randint(0, 20) 
 winorloss = "Loss"
 diecounter = 0
 shotarrow = False
 metwumpus = False
 initialize()
 show_instructions()
-print("You have started in Room 0.")
+print(f"You have started in Room {pos}.")
 print("The Room Numbers will be from 0 to 19.")
 #main code
 #moving loop
@@ -158,6 +158,7 @@ while game == True:
         superbats()
         print(f"You are in Room {pos}.")
     #moving code
+    print(f"There are tunnels that lead to {roomnumbers[pos]}.")
     movingstr = input("Would you like to move? (Y or N) ")
     if movingstr == ("Y"):
         endpos = int(input("Which room number would you like to move to? "))
