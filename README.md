@@ -1,0 +1,8 @@
+# 102
+DISCLAIMER: THIS REPOSITORY IS FOR ARCHIVAL PURPOSES ONLY, IT IS NOT FOR CHEATING. I AM NOT TO BLAME IF YOU, THE USER, COPY THE WHOLE CODE AND THEN GET CAUGHT CHEATING.
+ I AIN'T YOUR MOMMY SO DON'T CRY TO ME ABOUT HOW YOU GOT CAUGHT CHEATING OR YOU DIDN'T KNOW ABOUT ANY OF THE KNOWLEDGE ON THE TEST. 
+ DON'T BE A LITTLE PISSBABY.
+AGAIN, THIS IS FOR ARCHIVAL PURPOSES ONLY.
+
+Most of the ENGR 102 code from String Splicing onwards is here. Wanted to store old labs for future students and present students at TAMU.
+Most of the labs should be helpful for those who have Cahill or similar lab topics.
