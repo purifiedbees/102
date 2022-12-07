@@ -46,16 +46,16 @@ def randompath():   #randompath for arrows if shoot(path) returns false
     return ranpath
 
 def initialize():    #initializes the entire function and puts the wumpus and bats and holes in different positions around the game
-    possiblepos = list(range(20))
-    wumpus = possiblepos[rand.randint(0, len(possiblepos) - 1)]
+    possiblepos = list(range(1, 20))
+    wumpus = possiblepos[rand.randint(1, len(possiblepos) - 1)]
     possiblepos.remove(wumpus)
-    bats[0] = possiblepos[rand.randint(0, len(possiblepos) - 1)]
+    bats[0] = possiblepos[rand.randint(1, len(possiblepos) - 1)]
     possiblepos.remove(bats[0])
-    bats[1] = possiblepos[rand.randint(0, len(possiblepos) - 1)]
+    bats[1] = possiblepos[rand.randint(1, len(possiblepos) - 1)]
     possiblepos.remove(bats[1])
-    holes[0] = possiblepos[rand.randint(0, len(possiblepos) - 1)]
+    holes[0] = possiblepos[rand.randint(1, len(possiblepos) - 1)]
     possiblepos.remove(holes[0])
-    holes[1] = possiblepos[rand.randint(0, len(possiblepos) - 1)]
+    holes[1] = possiblepos[rand.randint(1, len(possiblepos) - 1)]
     possiblepos.remove(holes[1])
 
 def moving(endpos):        #lets the player move around, endpos is going to be a user inputted value
@@ -77,6 +77,7 @@ def wakewumpus():      #wumpus if it gets to wake up, has a random chance to mov
     wake = rand.randint(0,3)
     if wake != 3:
         wumpus = roomnumbers[wumpus][rand.randint(0,2)]
+        print("The wumpus has moved into a different room!")
 
 def show_instructions():
     print ("""
@@ -110,14 +111,17 @@ def show_instructions():
     WARNINGS:
         WHEN YOU ARE ONE ROOM AWAY FROM WUMPUS OR A HAZARD,
         THE COMPUTER SAYS:
-        WUMPUS:   'I SMELL A WUMPUS'
-        BAT   :   'BATS NEAR BY'
-        PIT   :   'I FEEL A DRAFT'
+        WUMPUS:   'YOU SMELL A WUMPUS'
+        BAT   :   'THERE ARE BATS NEAR BY'
+        PIT   :   'YOU FEEL A DRAFT'
         """)
 
 game = True
 pos = 0 
 winorloss = "Loss"
+diecounter = 0
+shotarrow = False
+metwumpus = False
 initialize()
 show_instructions()
 print("You have started in Room 0.")
@@ -126,11 +130,39 @@ print("The Room Numbers will be from 0 to 19.")
 #moving loop
 while game == True:
     print(f"You have {arrows} arrows left.")
+    if shotarrow == True or metwumpus == True:
+        wakewumpus()
+    
+    #conditionals for the wumpus and game
+    if wumpus == roomnumbers[pos]:
+        print("You smell a wumpus nearby.")
+    elif bats[0] == roomnumbers[pos] or bats[1] == roomnumbers[pos]:
+        print("There are bats nearby.")
+    elif holes[0]  == roomnumbers[pos] or holes[1] == roomnumbers[pos]:
+        print("You feel a draft.")
+    else:
+        pass
+    #conditionals for wumpus and bats moving the player around
+    if wumpus == pos:
+        if shotarrow == False:
+            print("You stumbled upon the wumpus! It has awaken!")
+            metwumpus = True
+        wakewumpus()
+        diecounter += 1
+        if diecounter > 1:
+            print("You have been trampled by the wumpus.")
+            break
+    #conditionals for bats picking you up
+    if bats[0] == pos or bats[1] == pos:
+        print("You ventured into where one of the bats were! You got picked up and flown to a random room!")
+        superbats()
+        print(f"You are in Room {pos}.")
     #moving code
     movingstr = input("Would you like to move? (Y or N) ")
     if movingstr == ("Y"):
         endpos = int(input("Which room number would you like to move to? "))
-        if moving(endpos) is True:  
+        if moving(endpos) == True:  
+            print(f"You moved to Room {pos}.")
             pass
         else:
             print("Sorry, you can't go there.")
@@ -149,6 +181,7 @@ while game == True:
         pathstr = pathstr.split(",")
         path = [eval(i) for i in pathstr]
         wakewumpus()
+        shotarrow = True
         print("The Wumpus has awaken! BEWARE!")
         if len(path) < 5:
             shoot(path)
@@ -167,12 +200,13 @@ while game == True:
                 game = False
                 break
     else:
-        continue
+        pass
+
     if arrows == 0 or arrows < 0:
         break
     elif wumpus == pos or holes == pos:
         break
-
+    continue        #restarts the loop until the player wins or loses
 
 if winorloss == "Win":
     print("You won as you killed the Wumpus! Congrats! :)")
